@@ -1,16 +1,15 @@
-import pygame
 import sys
 
-from Graphics import RendererManager
-from Graphics.Entity.PlayerRenderer import PlayerRenderer
-from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
-from world import add_entity, update_entities
+import pygame
 
-from world import Player
-from time import sleep
+from Graphics import RendererManager, register_renderers
+from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
+from core.Utils import game_registry
+from event import process_event, register_event_handlers
+from world import add_entity, update_entities, Player
 
 # used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
-game_registry = {}
+from world.entity.enemy import Triangle
 
 # TODO move to a config file in some way
 desired_fps = 60
@@ -26,6 +25,8 @@ def start_event_loop():
                 sys.exit(0)
             elif is_event_controller_input(event):
                 handle_controller_input(event, game_registry['controllers'][event.joy])
+            else:
+                process_event(event)
             game_registry['renderer_manager'].render_game()
         # wait to update the next loop
         clock.tick(desired_fps)
@@ -37,21 +38,35 @@ def setup_controllers():
     game_registry['controllers'] = controllers
 
 
+def register_all_event_handlers():
+    from event.handlers import entity_handlers
+    for event_id, handler_list in entity_handlers.items():
+        register_event_handlers(event_id, handler_list)
+
+
+def setup_player():
+    player = Player()
+    add_entity(player)
+    game_registry['player'] = player
+
+
 def main():
     print('init game')
     pygame.init()
     # screen size
-    screen = width, height = 500, 500
-    renderer_manager = RendererManager(screen)
-    game_registry['renderer_manager'] = renderer_manager
+    screen = 500, 500
+    game_registry['renderer_manager'] = RendererManager(screen)
     # DEBUG
-    player_renderer = PlayerRenderer()
-    renderer_manager.register_renderer(Player, player_renderer)
-    player = Player()
-    add_entity(player)
+    triangle = Triangle()
+    triangle.pos_x = 100
+    triangle.pos_y = 100
+    add_entity(triangle)
     # END DEBUG
+    setup_player()
+    register_renderers()
     setup_controllers()
-    bind_default_controls_for_player(game_registry['controllers'][0], player)
+    register_all_event_handlers()
+    bind_default_controls_for_player(game_registry['controllers'][0], game_registry['player'])
     start_event_loop()
 
 

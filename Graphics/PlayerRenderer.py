@@ -1,6 +1,8 @@
-from Graphics import Renderer, RendererManager
-from world import Player
 import pygame
+
+from Graphics.Renderer import Renderer
+from Graphics.RendererManager import RendererManager
+from world import Player
 
 
 class PlayerRenderer(Renderer):

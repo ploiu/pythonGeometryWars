@@ -1,1 +1,1 @@
-from .Main import get_registry_entry
+from .Utils import get_player

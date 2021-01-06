@@ -1,4 +1,4 @@
-from world.Entity import Entity
+from world.entity.Entity import Entity
 
 
 class Player(Entity):
