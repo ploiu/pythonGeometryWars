@@ -12,7 +12,7 @@ class RendererManager:
     screen = None
 
     def __init__(self, screen_size):
-        RendererManager.screen = pygame.display.set_mode(screen_size)
+        RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
 
     @staticmethod
     def register_renderer(entity_type, renderer):

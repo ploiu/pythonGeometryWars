@@ -1,11 +1,38 @@
 import pygame
 
+"""
+MIT License
+
+Copyright (c) 2019 ploiu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 
 class Controller:
     """
        Abstract class to make using pygame's joysticks easier.
        The goal of this class is to be pretty generic, so as to allow for specific controller types to be created from this class.
     """
+
+    # used to adjust the amount of drift for the controller. E.g. some controllers don't give perfect 0/1/-1 values, so use this for the threshhold
+    axis_threshold = 0.25
 
     def __init__(self, joystickId):
         """
@@ -137,9 +164,9 @@ class Controller:
         """
         if axisId in self.__directionalMappings:
             # determine which function to call based on the state of the axis (negative, 0, or positive)
-            if direction < 0:
+            if direction < -Controller.axis_threshold:
                 self.__directionalMappings[axisId]['negative']()
-            elif direction == 0:
+            elif -Controller.axis_threshold <= direction <= Controller.axis_threshold:
                 self.__directionalMappings[axisId]['release']()
             else:
                 self.__directionalMappings[axisId]['positive']()

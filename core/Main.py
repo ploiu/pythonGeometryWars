@@ -3,24 +3,32 @@ import sys
 
 from Graphics import RendererManager
 from Graphics.Entity.PlayerRenderer import PlayerRenderer
-from controller import Controller
+from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
 from world import add_entity, update_entities
 
-# used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
 from world import Player
+from time import sleep
 
+# used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
 game_registry = {}
+
+# TODO move to a config file in some way
+desired_fps = 60
 
 
 def start_event_loop():
+    clock = pygame.time.Clock()
     while True:
+        update_entities()
         for event in pygame.event.get():
             # allow the user to exit the game
             if event.type == pygame.QUIT:
                 sys.exit(0)
-            else:
-                update_entities()
-                game_registry['renderer_manager'].render_game()
+            elif is_event_controller_input(event):
+                handle_controller_input(event, game_registry['controllers'][event.joy])
+            game_registry['renderer_manager'].render_game()
+        # wait to update the next loop
+        clock.tick(desired_fps)
 
 
 def setup_controllers():
@@ -43,7 +51,7 @@ def main():
     add_entity(player)
     # END DEBUG
     setup_controllers()
-    print(game_registry)
+    bind_default_controls_for_player(game_registry['controllers'][0], player)
     start_event_loop()
 
 
