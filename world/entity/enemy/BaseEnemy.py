@@ -15,8 +15,8 @@ class BaseEnemy(Entity):
         pass
 
     def update(self):
-        super(BaseEnemy, self).update()
         self.ai()
+        super(BaseEnemy, self).update()
 
     @abstractmethod
     def shoot(self, angle):

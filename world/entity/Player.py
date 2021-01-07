@@ -8,11 +8,4 @@ class Player(Entity):
         self.aim_direction_degrees = 0
 
     def update(self):
-        if self.current_health <= 0:
-            self.is_dead = True
-            # TODO do something when the player specifically dies
-        else:
-            # player is not dead, update states
-            self.pos_x += self.speed_x
-            self.pos_y += self.speed_y
         super(Player, self).update()
