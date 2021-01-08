@@ -1,4 +1,6 @@
+from event import PLAYER_DEATH_EVENT
 from world.entity.Entity import Entity
+from pygame import event
 
 
 class Player(Entity):
@@ -9,3 +11,5 @@ class Player(Entity):
 
     def update(self):
         super(Player, self).update()
+        if self.current_health <= 0:
+            event.post(event.Event(PLAYER_DEATH_EVENT, {'player': self}))

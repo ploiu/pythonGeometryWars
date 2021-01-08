@@ -25,7 +25,9 @@ class Triangle(BaseEnemy):
                 self.speed_y = 0
             # now if we are within the player, attack them and kill ourselves
             if self.rect.colliderect(self.target.rect):
-                pygame.event.post(pygame.event.Event(ENTITY_HURT_EVENT, {'hurt_entity': self.target, 'attacking_entity': self, 'damage': 20}))
+                pygame.event.post(pygame.event.Event(ENTITY_HURT_EVENT,
+                                                     {'hurt_entity': self.target, 'attacking_entity': self,
+                                                      'damage': 20}))
                 self.is_dead = True
 
     def _follow_player(self):
@@ -35,4 +37,5 @@ class Triangle(BaseEnemy):
         self.speed_y = velocities[1] * self.speed
 
     def shoot(self, angle):
+        # triangles don't shoot, they act like suicide bombers
         pass

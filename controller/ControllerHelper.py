@@ -1,5 +1,7 @@
 import pygame
 
+from core import get_player
+from world.entity.bullet import PlayerBullet
 from .SnesMappings import *
 
 """
@@ -19,6 +21,10 @@ def bind_default_controls_for_player(controller, player):
                                      lambda: player.set_velocity_x(-player.speed),
                                      lambda: player.set_velocity_x(0)
                                      )
+    controller.map_button(SNESButtons.X, lambda: PlayerBullet(get_player()).shoot(90), None)
+    controller.map_button(SNESButtons.A, lambda: PlayerBullet(get_player()).shoot(0), None)
+    controller.map_button(SNESButtons.B, lambda: PlayerBullet(get_player()).shoot(270), None)
+    controller.map_button(SNESButtons.Y, lambda: PlayerBullet(get_player()).shoot(180), None)
 
 
 def is_event_controller_input(event):

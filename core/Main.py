@@ -4,6 +4,7 @@ import pygame
 
 from Graphics import RendererManager, register_renderers
 from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
+from core.GlobalValues import should_run_game_loop
 from core.Utils import game_registry
 from event import process_event, register_event_handlers
 from world import add_entity, update_entities, Player
@@ -17,7 +18,7 @@ desired_fps = 60
 
 def start_event_loop():
     clock = pygame.time.Clock()
-    while True:
+    while should_run_game_loop:
         update_entities()
         for event in pygame.event.get():
             # allow the user to exit the game

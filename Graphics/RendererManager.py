@@ -1,6 +1,7 @@
 import pygame
 
 # the screen background color
+from core import get_player
 from world import EntityManager
 
 screen_background = 0, 0, 0
@@ -32,6 +33,7 @@ class RendererManager:
         self.render_background()
         self.render_world_objects()
         self.render_entities()
+        self.render_player_health()
         pygame.display.flip()
 
     def render_background(self):
@@ -45,3 +47,10 @@ class RendererManager:
         for entity in EntityManager.entities:
             renderer_type = type(entity)
             self.registered_renderers[renderer_type].render(entity)
+
+    @staticmethod
+    def render_player_health():
+        player = get_player()
+        font = pygame.font.SysFont(None, 20)
+        img = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
+        RendererManager.screen.blit(img, (20, 450))
