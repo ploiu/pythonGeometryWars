@@ -8,7 +8,6 @@ from core.GlobalValues import should_run_game_loop
 from core.Utils import game_registry
 from event import process_event, register_event_handlers
 from world import add_entity, update_entities, Player
-
 # used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
 from world.entity.enemy import Triangle
 

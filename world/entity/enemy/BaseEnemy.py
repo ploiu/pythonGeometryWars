@@ -1,5 +1,6 @@
+from abc import abstractmethod
+
 from world.entity.Entity import Entity
-from abc import ABC, abstractmethod
 
 
 class BaseEnemy(Entity):

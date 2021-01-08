@@ -1,11 +1,9 @@
-import pygame
-from pygame.rect import Rect
 from pygame import event
+from pygame.rect import Rect
 
 from event import ENTITY_HURT_EVENT
-from world import add_entity, EntityManager, Player
+from world import add_entity, EntityManager
 from world.entity.Entity import Entity
-from math import sin, cos
 
 
 class BaseBullet(Entity):
@@ -27,8 +25,11 @@ class BaseBullet(Entity):
         }
 
     def shoot(self, angle):
+        # create our hit box
         self.rect = Rect(self.owner.rect.midtop[0], self.owner.rect.midtop[1], self.width, self.height)
+        # update our position to match our hitbox's position
         self.pos_x, self.pos_y = self.rect.x, self.rect.y
+        # set our speed based on the angle we were shot in
         self.speed_x, self.speed_y = self.angle_dict[angle]
 
     def update(self):
