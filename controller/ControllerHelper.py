@@ -25,6 +25,10 @@ def bind_default_controls_for_player(controller, player):
     controller.map_button(SNESButtons.A, lambda: PlayerBullet(get_player()).shoot(0), None)
     controller.map_button(SNESButtons.B, lambda: PlayerBullet(get_player()).shoot(270), None)
     controller.map_button(SNESButtons.Y, lambda: PlayerBullet(get_player()).shoot(180), None)
+    controller.map_multi_button((SNESButtons.X, SNESButtons.A), lambda: PlayerBullet(get_player()).shoot(45), None)
+    controller.map_multi_button((SNESButtons.X, SNESButtons.Y), lambda: PlayerBullet(get_player()).shoot(135), None)
+    controller.map_multi_button((SNESButtons.Y, SNESButtons.B), lambda: PlayerBullet(get_player()).shoot(225), None)
+    controller.map_multi_button((SNESButtons.B, SNESButtons.A), lambda: PlayerBullet(get_player()).shoot(315), None)
 
 
 def is_event_controller_input(event):

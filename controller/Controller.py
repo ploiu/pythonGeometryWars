@@ -77,6 +77,8 @@ class Controller:
         self.__joystickId = joystickId
         # an empty function to default to for button commands
         self.__UNMAPPED_COMMAND = (lambda: None)
+        # a list of buttons that can trigger something when held down at the same time
+        self.__multi_button_mappings = {}
 
     def get_controllerNumber(self):
         return self.__joystickId
@@ -108,6 +110,23 @@ class Controller:
         # now add the mapping
         self.__buttonMappings[buttonId] = {'press': pressCommand, 'release': releaseCommand}
 
+    def map_multi_button(self, button_pair, press_command=None, release_command=None):
+        """
+        Used to bind a function to the simultaneous pressing of multiple buttons at the same time
+        :param button_pair: 
+        :param press_command: 
+        :param release_command: 
+        :return: 
+        """
+        # if we already have this pair in our mappings, delete it
+        if button_pair in self.__multi_button_mappings:
+            del self.__multi_button_mappings[button_pair]
+        # if press command is none, make it a lambda that does nothing
+        self.__multi_button_mappings[button_pair] = {
+            'press': self.__UNMAPPED_COMMAND if press_command is None else press_command,
+            'release': self.__UNMAPPED_COMMAND if release_command is None else release_command
+        }
+
     def map_directionalButton(self, axisId, positiveCommand=None, negativeCommand=None, releaseCommand=None):
         """
             Used to bind a function to the change in state of one of the controller's axes (e.g. a directional pad).
@@ -136,6 +155,14 @@ class Controller:
             
             :param buttonId: the id of the button being pressed
         """
+        # check to see if the pressed button is a part of a multi map command
+        for pair, command in self.__multi_button_mappings.items():
+            if buttonId in pair and buttonId == max(pair) and self.get_buttonState(min(pair)):
+                command['press']()
+                return  # don't execute the normal one
+            elif buttonId in pair and buttonId == min(pair) and self.get_buttonState(max(pair)):
+                return  # prevent the single button action from triggering
+
         # first check if the buttonId is in our mappings before we try to access it
         if buttonId in self.__buttonMappings:
             # call the associated function

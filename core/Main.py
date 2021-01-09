@@ -9,7 +9,7 @@ from core import screen_size, difficulty_modifier
 from core.Utils import game_registry
 from event import process_event, register_event_handlers, LEVEL_START_EVENT, LEVEL_PROGRESS_EVENT
 from world import add_entity, update_entities, Player
-from world.entity.enemy import Triangle, Square
+from world.entity.enemy import Triangle, Square, Circle
 
 
 def start_event_loop():
@@ -56,6 +56,7 @@ def register_enemies():
     from world.entity.enemy import register_enemy
     register_enemy(Triangle, 2)
     register_enemy(Square, 2)
+    register_enemy(Circle, 5)
 
 
 def setup_player():
