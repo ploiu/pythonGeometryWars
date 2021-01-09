@@ -81,7 +81,3 @@ def main():
     register_all_event_handlers()
     bind_default_controls_for_player(game_registry['controllers'][0], game_registry['player'])
     start_event_loop()
-
-
-if __name__ == "__main__":
-    main()
