@@ -5,6 +5,7 @@ from core import get_player
 from world import EntityManager
 
 screen_background = 0, 0, 0
+screen_size = None
 
 
 class RendererManager:
@@ -14,7 +15,8 @@ class RendererManager:
 
     def __init__(self):
         global screen_size
-        screen_size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+        display_info = pygame.display.Info()
+        screen_size = (display_info.current_w, display_info.current_h)
         RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
 
     @staticmethod
@@ -27,6 +29,11 @@ class RendererManager:
             return RendererManager.registered_renderers[entity_type]
         else:
             raise ValueError("No renderer for {0}".format(entity_type))
+
+    @staticmethod
+    def get_screen_size():
+        global screen_size
+        return screen_size
 
     def render_game(self):
         """
@@ -52,6 +59,7 @@ class RendererManager:
 
     @staticmethod
     def render_player_health():
+        global screen_size
         player = get_player()
         font = pygame.font.SysFont(None, 20)
         img = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))

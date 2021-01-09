@@ -2,7 +2,7 @@ from random import randint
 
 from pygame import event
 
-from core import screen_size
+from Graphics import RendererManager
 from core.GlobalValues import difficulty_modifier
 from core.Utils import game_registry, get_player
 from event import ENEMY_SPAWN_EVENT, LEVEL_END_EVENT, LEVEL_START_EVENT
@@ -60,7 +60,7 @@ class Level:
 
     def spawn_enemy(self, index):
         # TODO improve to prevent from spawning on player, maybe spawn close to out of bounds?
-        max_x, max_y = screen_size
+        max_x, max_y = RendererManager.get_screen_size()
         current_x = randint(20, max_x - 20)
         current_y = randint(20, max_y - 20)
         event_data = {'enemy_class': self.set_enemies[index], 'x': current_x, 'y': current_y}

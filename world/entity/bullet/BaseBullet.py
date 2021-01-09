@@ -1,7 +1,8 @@
 from pygame import event
 from pygame.rect import Rect
 
-from core import screen_size
+import Graphics
+from Graphics import RendererManager
 from event import ENTITY_HURT_EVENT
 from world.entity.Entity import Entity
 
@@ -36,10 +37,10 @@ class BaseBullet(Entity):
     def update(self):
         super(BaseBullet, self).update()
         # kill the bullet if it's out of bounds
-        if 0 > self.rect.top or self.rect.bottom > screen_size[1]:
+        if 0 > self.rect.top or self.rect.bottom > Graphics.RendererManager.get_screen_size()[1]:
             self.is_dead = True
 
-        if 0 > self.rect.left or self.rect.right > screen_size[0]:
+        if 0 > self.rect.left or self.rect.right > Graphics.RendererManager.get_screen_size()[0]:
             self.is_dead = True
 
         # get any entities this bullet has hit

@@ -1,4 +1,4 @@
-from .RendererManager import RendererManager
+from .RendererManager import RendererManager, screen_size
 from .Renderer import Renderer
 from .PlayerRenderer import PlayerRenderer
 from .TriangleRenderer import TriangleRenderer

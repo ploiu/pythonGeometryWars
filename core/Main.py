@@ -4,7 +4,7 @@ import pygame
 
 from Graphics import RendererManager, register_renderers
 from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
-from core import screen_size, difficulty_modifier
+from core import difficulty_modifier
 
 from core.Utils import game_registry
 from event import process_event, register_event_handlers, LEVEL_START_EVENT, LEVEL_PROGRESS_EVENT

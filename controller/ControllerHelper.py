@@ -2,7 +2,13 @@ import pygame
 
 from core import get_player
 from world.entity.bullet import PlayerBullet
-from .SnesMappings import *
+from .SnesMappings import SNESButtons
+import sys
+
+if sys.platform == 'win32':
+    from .SnesMappings import SNESAxes_Win as SNESAxes
+else:
+    from .SnesMappings import SNESAxes
 
 """
 A bunch of helper functions for controllers

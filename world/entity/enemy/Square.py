@@ -1,6 +1,8 @@
 from random import randint
 
-from core import desired_fps, difficulty_modifier, shoot_angles, screen_size
+import Graphics
+from Graphics import RendererManager
+from core import desired_fps, difficulty_modifier, shoot_angles
 from event import SHOOT_EVENT
 from world.entity.bullet.EnemyBullet import EnemyBullet
 from world.entity.enemy.BaseEnemy import BaseEnemy
@@ -34,12 +36,12 @@ class Square(BaseEnemy):
         # change direction if past the edges of the screen
         if self.pos_x <= 0:
             self.speed_x = self.speed
-        elif self.pos_x >= screen_size[0]:
+        elif self.pos_x >= Graphics.RendererManager.get_screen_size()[0]:
             self.speed_x = -self.speed
 
         if self.pos_y <= 0:
             self.speed_y = self.speed
-        elif self.pos_y >= screen_size[1]:
+        elif self.pos_y >= Graphics.RendererManager.get_screen_size()[1]:
             self.speed_y = -self.speed
 
     def update(self):

@@ -15,3 +15,9 @@ class SNESButtons(IntEnum):
 class SNESAxes(IntEnum):
     HORIZONTAL = 0
     VERTICAL = 1
+
+
+# the mappings are different on windows for some reason
+class SNESAxes_Win(IntEnum):
+    HORIZONTAL = 3
+    VERTICAL = 4
