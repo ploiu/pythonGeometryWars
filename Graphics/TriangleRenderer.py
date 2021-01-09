@@ -16,5 +16,5 @@ class TriangleRenderer(Renderer):
             triangle_bottom_left = rect.bottomleft
             triangle_top = rect.midtop
             triangle_bottom_right = rect.bottomright
-            color = 65, 127, 0
+            color = 255, 103, 25
             draw.polygon(RendererManager.screen, color, [triangle_bottom_left, triangle_top, triangle_bottom_right])
