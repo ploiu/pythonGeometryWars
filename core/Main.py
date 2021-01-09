@@ -9,7 +9,7 @@ from core import screen_size, difficulty_modifier
 from core.Utils import game_registry
 from event import process_event, register_event_handlers, LEVEL_START_EVENT, LEVEL_PROGRESS_EVENT
 from world import add_entity, update_entities, Player
-from world.entity.enemy import Triangle
+from world.entity.enemy import Triangle, Square
 
 
 def start_event_loop():
@@ -17,7 +17,7 @@ def start_event_loop():
     global should_run_game_loop, desired_fps
     clock = pygame.time.Clock()
     # TODO a lot of this should be moved out, but to where?
-    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(1000 // difficulty_modifier))
+    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(2000 // difficulty_modifier))
     should_run_game_loop = True
     # set up an initial level
     pygame.event.post(pygame.event.Event(LEVEL_START_EVENT))
@@ -55,6 +55,7 @@ def register_all_event_handlers():
 def register_enemies():
     from world.entity.enemy import register_enemy
     register_enemy(Triangle, 2)
+    register_enemy(Square, 2)
 
 
 def setup_player():

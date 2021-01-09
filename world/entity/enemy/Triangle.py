@@ -27,7 +27,7 @@ class Triangle(BaseEnemy):
             if self.rect.colliderect(self.target.rect):
                 pygame.event.post(pygame.event.Event(ENTITY_HURT_EVENT,
                                                      {'hurt_entity': self.target, 'attacking_entity': self,
-                                                      'damage': 20}))
+                                                      'damage': 10}))
                 self.is_dead = True
 
     def _follow_player(self):

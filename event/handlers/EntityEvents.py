@@ -1,7 +1,7 @@
 import pygame
 
 from Graphics import RendererManager
-from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT
+from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT, SHOOT_EVENT
 from world import add_entity
 
 
@@ -30,9 +30,22 @@ def enemy_spawn_event(spawn_event):
     add_entity(enemy)
 
 
+def on_shoot(shoot_event):
+    event_info = shoot_event.__dict__
+    damage = int(event_info['damage']) if 'damage' in event_info else 5
+    angle = int(event_info['angle']) if 'angle' in event_info else 0
+    bullet_class = event_info['bullet_class']
+    owner = event_info['owner'] if 'owner' in event_info else None
+    bullet = bullet_class(damage=damage)
+    bullet.owner = owner
+    add_entity(bullet)
+    bullet.shoot(angle)
+
+
 # export this list to register them all
 handlers = {
     ENTITY_HURT_EVENT: [entity_hurt],
     PLAYER_DEATH_EVENT: [player_death],
-    ENEMY_SPAWN_EVENT: [enemy_spawn_event]
+    ENEMY_SPAWN_EVENT: [enemy_spawn_event],
+    SHOOT_EVENT: [on_shoot]
 }

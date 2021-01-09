@@ -3,7 +3,6 @@ from pygame.rect import Rect
 
 from core import screen_size
 from event import ENTITY_HURT_EVENT
-from world import add_entity, EntityManager
 from world.entity.Entity import Entity
 
 
@@ -12,6 +11,7 @@ class BaseBullet(Entity):
         super(BaseBullet, self).__init__(width=width, height=height, max_health=1, speed=speed)
         self.damage = damage
         self.owner = owner
+        from world.entity import add_entity
         add_entity(self)
         # 8 different angles to shoot in
         self.angle_dict = {
@@ -54,6 +54,7 @@ class BaseBullet(Entity):
         self.is_dead = True
 
     def check_hit(self):
+        from world.entity import EntityManager
         # get all entities in the world, and check if we intersect with one
         all_entities = EntityManager.entities
         non_owner_entities = list(filter(lambda it: it != self.owner and it != self, all_entities))

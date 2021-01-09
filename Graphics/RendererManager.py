@@ -1,7 +1,7 @@
 import pygame
 
 # the screen background color
-from core import get_player
+from core import get_player, screen_size
 from world import EntityManager
 
 screen_background = 0, 0, 0
@@ -53,4 +53,4 @@ class RendererManager:
         player = get_player()
         font = pygame.font.SysFont(None, 20)
         img = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
-        RendererManager.screen.blit(img, (20, 450))
+        RendererManager.screen.blit(img, (20, screen_size[1] - 20))
