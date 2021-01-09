@@ -1,7 +1,7 @@
 import pygame
 
 # the screen background color
-from core import get_player, screen_size
+from core import get_player
 from world import EntityManager
 
 screen_background = 0, 0, 0
@@ -12,7 +12,9 @@ class RendererManager:
     registered_renderers = {}
     screen = None
 
-    def __init__(self, screen_size):
+    def __init__(self):
+        global screen_size
+        screen_size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
         RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
 
     @staticmethod

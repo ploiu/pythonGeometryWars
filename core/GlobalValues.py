@@ -6,7 +6,7 @@ desired_fps = 60
 # decrease it
 difficulty_modifier = 1
 # the dimensions of the screen
-screen_size = 800, 800
+screen_size = None
 
 # a list of angles an entity can shoot in
 shoot_angles = [0, 45, 90, 135, 180, 225, 270, 315]
