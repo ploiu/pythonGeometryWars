@@ -68,7 +68,7 @@ def setup_player():
 def main():
     print('init game')
     pygame.init()
-    game_registry['renderer_manager'] = RendererManager(screen_size)
+    game_registry['renderer_manager'] = RendererManager()
     # DEBUG
     triangle = Triangle()
     triangle.pos_x = 100
