@@ -5,6 +5,7 @@ ENTITY_UPDATE_EVENT = event.custom_type()
 ENTITY_HURT_EVENT = event.custom_type()
 PLAYER_DEATH_EVENT = event.custom_type()
 SHOOT_EVENT = event.custom_type()
+ENEMY_DEATH_EVENT = event.custom_type()
 
 # specifically for level-related use
 LEVEL_START_EVENT = event.custom_type()

@@ -5,7 +5,7 @@ from level import Level
 
 def level_start(level_start_event):
     set_enemies = level_start_event.__dict__['enemies'] if 'enemies' in level_start_event.__dict__ else None
-    level = Level(set_enemies)
+    level = Level()
     level.start()
 
 

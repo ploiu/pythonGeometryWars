@@ -13,16 +13,20 @@ from world.entity.enemy import Triangle, Square, Circle
 
 
 def start_event_loop():
-    from core.GlobalValues import should_run_game_loop, desired_fps
-    global should_run_game_loop, desired_fps
+    from core.GlobalValues import is_running_game_loop, set_running_game_loop, desired_fps
+    global desired_fps
     clock = pygame.time.Clock()
     # TODO a lot of this should be moved out, but to where?
-    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(2000 // difficulty_modifier))
-    should_run_game_loop = True
+    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(10_000 // difficulty_modifier))
+    set_running_game_loop(True)
     # set up an initial level
     pygame.event.post(pygame.event.Event(LEVEL_START_EVENT))
-    while should_run_game_loop:
-        update_entities()
+    while True:
+        if is_running_game_loop():
+            update_entities()
+        else:
+            # stop the timer for level progress
+            pygame.time.set_timer(LEVEL_PROGRESS_EVENT, 0)
         for event in pygame.event.get():
             # allow the user to exit the game
             if event.type == pygame.QUIT:

@@ -1,7 +1,7 @@
 import pygame
 
-from Graphics import RendererManager
-from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT, SHOOT_EVENT
+from core import get_current_level, set_running_game_loop
+from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT, SHOOT_EVENT, ENEMY_DEATH_EVENT
 from world import add_entity
 
 
@@ -9,16 +9,14 @@ def entity_hurt(hurt_event):
     hurt_entity = hurt_event.__dict__['hurt_entity']
     attacking_entity = hurt_event.__dict__['attacking_entity']
     hurt_entity.current_health -= int(hurt_event.__dict__['damage'])
-    print('PAIN PEKO')
+    if hurt_entity.current_health <= 0:
+        pygame.event.post(pygame.event.Event(ENEMY_DEATH_EVENT))
 
 
 def player_death(player_death_event):
     player = player_death_event.__dict__['player']
     player.is_dead = True
-    font = pygame.font.SysFont(None, 24)
-    img = font.render('hello', True, (255, 255, 255))
-    RendererManager.screen.blit(img, (20, 20))
-
+    set_running_game_loop(False)
 
 def enemy_spawn_event(spawn_event):
     enemy_class = spawn_event.__dict__['enemy_class']
@@ -42,10 +40,17 @@ def on_shoot(shoot_event):
     bullet.shoot(angle)
 
 
+def on_entity_death(event):
+    # update the difficulty and spawn in an enemy to replace it
+    level = get_current_level()
+    level.progress(True)
+
+
 # export this list to register them all
 handlers = {
     ENTITY_HURT_EVENT: [entity_hurt],
     PLAYER_DEATH_EVENT: [player_death],
     ENEMY_SPAWN_EVENT: [enemy_spawn_event],
-    SHOOT_EVENT: [on_shoot]
+    SHOOT_EVENT: [on_shoot],
+    ENEMY_DEATH_EVENT: [on_entity_death]
 }

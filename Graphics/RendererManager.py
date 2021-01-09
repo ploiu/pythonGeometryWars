@@ -16,8 +16,8 @@ class RendererManager:
     def __init__(self):
         global screen_size
         display_info = pygame.display.Info()
-        screen_size = (display_info.current_w, display_info.current_h)
-        RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF and pygame.FULLSCREEN)
+        screen_size = (display_info.current_w // 2, display_info.current_h // 2)
+        RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
 
     @staticmethod
     def register_renderer(entity_type, renderer):
@@ -42,7 +42,7 @@ class RendererManager:
         self.render_background()
         self.render_world_objects()
         self.render_entities()
-        self.render_player_health()
+        self.render_status_text()
         pygame.display.flip()
 
     def render_background(self):
@@ -58,9 +58,12 @@ class RendererManager:
             self.registered_renderers[renderer_type].render(entity)
 
     @staticmethod
-    def render_player_health():
+    def render_status_text():
         global screen_size
+        from level import Level
         player = get_player()
         font = pygame.font.SysFont(None, 20)
-        img = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
-        RendererManager.screen.blit(img, (20, screen_size[1] - 20))
+        health = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
+        level = font.render("Level: {0}".format(Level.current_level), True, (0, 125, 245))
+        RendererManager.screen.blit(health, (20, screen_size[1] - 20))
+        RendererManager.screen.blit(level, (130, screen_size[1] - 20))
