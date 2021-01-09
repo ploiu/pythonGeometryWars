@@ -13,5 +13,5 @@ class SNESButtons(IntEnum):
 
 
 class SNESAxes(IntEnum):
-    HORIZONTAL = 3
-    VERTICAL = 4
+    HORIZONTAL = 0
+    VERTICAL = 1
