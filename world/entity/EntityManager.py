@@ -3,6 +3,7 @@ import pygame
 from pygame.event import Event
 
 from event import ENTITY_UPDATE_EVENT
+from world.entity.enemy.BaseEnemy import BaseEnemy
 
 
 def update_entities():
@@ -20,6 +21,15 @@ def add_entity(entity):
 
 def remove_entity(entity):
     EntityManager.entities.remove(entity)
+
+
+def get_enemy_count():
+    count = 0
+    for entity in EntityManager.entities:
+        if isinstance(entity, BaseEnemy):
+            count += 1
+
+    return count
 
 
 class EntityManager(ABC):

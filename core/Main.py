@@ -4,19 +4,23 @@ import pygame
 
 from Graphics import RendererManager, register_renderers
 from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
-from core.GlobalValues import should_run_game_loop
-from core.Utils import game_registry
-from event import process_event, register_event_handlers
-from world import add_entity, update_entities, Player
-# used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
-from world.entity.enemy import Triangle
+from core import screen_size, difficulty_modifier
 
-# TODO move to a config file in some way
-desired_fps = 60
+from core.Utils import game_registry
+from event import process_event, register_event_handlers, LEVEL_START_EVENT, LEVEL_PROGRESS_EVENT
+from world import add_entity, update_entities, Player
+from world.entity.enemy import Triangle
 
 
 def start_event_loop():
+    from core.GlobalValues import should_run_game_loop, desired_fps
+    global should_run_game_loop, desired_fps
     clock = pygame.time.Clock()
+    # TODO a lot of this should be moved out, but to where?
+    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(1000 // difficulty_modifier))
+    should_run_game_loop = True
+    # set up an initial level
+    pygame.event.post(pygame.event.Event(LEVEL_START_EVENT))
     while should_run_game_loop:
         update_entities()
         for event in pygame.event.get():
@@ -39,9 +43,18 @@ def setup_controllers():
 
 
 def register_all_event_handlers():
-    from event.handlers import entity_handlers
+    from event.handlers import entity_handlers, level_handlers
+    # entity handlers
     for event_id, handler_list in entity_handlers.items():
         register_event_handlers(event_id, handler_list)
+    # level handlers
+    for event_id, handler_list in level_handlers.items():
+        register_event_handlers(event_id, handler_list)
+
+
+def register_enemies():
+    from world.entity.enemy import register_enemy
+    register_enemy(Triangle, 2)
 
 
 def setup_player():
@@ -53,9 +66,7 @@ def setup_player():
 def main():
     print('init game')
     pygame.init()
-    # screen size
-    screen = 500, 500
-    game_registry['renderer_manager'] = RendererManager(screen)
+    game_registry['renderer_manager'] = RendererManager(screen_size)
     # DEBUG
     triangle = Triangle()
     triangle.pos_x = 100
@@ -63,6 +74,7 @@ def main():
     add_entity(triangle)
     # END DEBUG
     setup_player()
+    register_enemies()
     register_renderers()
     setup_controllers()
     register_all_event_handlers()
