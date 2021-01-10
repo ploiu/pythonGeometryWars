@@ -16,8 +16,12 @@ class RendererManager:
     def __init__(self):
         global screen_size
         display_info = pygame.display.Info()
-        screen_size = (display_info.current_w // 2, display_info.current_h // 2)
-        RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
+        if display_info.current_w < 1000 or display_info.current_h < 500:
+            screen_size = display_info.current_w, display_info.current_h
+            RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF and pygame.FULLSCREEN)
+        else:
+            screen_size = (display_info.current_w // 2, display_info.current_h // 2)
+            RendererManager.screen = pygame.display.set_mode(screen_size, pygame.DOUBLEBUF)
 
     @staticmethod
     def register_renderer(entity_type, renderer):
