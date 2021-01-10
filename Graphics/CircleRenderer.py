@@ -9,6 +9,6 @@ class CircleRenderer(Renderer):
 
     def render(self, circle):
         super(CircleRenderer, self).render(circle)
-        color = 148, 37, 148
         if circle.rect is not None:
+            color = (255, 215, 0) if circle.is_gold else (148, 37, 148)
             draw.circle(RendererManager.screen, color, circle.rect.center, circle.rect.width / 2)

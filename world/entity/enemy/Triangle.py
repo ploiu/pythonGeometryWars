@@ -7,7 +7,7 @@ from world.entity.enemy.BaseEnemy import BaseEnemy
 
 class Triangle(BaseEnemy):
     def __init__(self):
-        super(Triangle, self).__init__(width=10, height=10, max_health=3, armor=0, speed=2.2)
+        super(Triangle, self).__init__(width=10, height=10, max_health=3, armor=0, speed=2.2, score=25)
         self.target = None
 
     def ai(self):

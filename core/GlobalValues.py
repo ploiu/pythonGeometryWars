@@ -6,7 +6,7 @@ should_run_game_loop = False
 desired_fps = 60
 # the difficulty modifier. A value greater than 1 will increase the difficulty, while a value between 0 and 1 will
 # decrease it
-difficulty_modifier = 3
+difficulty_modifier = 1
 # a list of angles an entity can shoot in
 shoot_angles = [0, 45, 90, 135, 180, 225, 270, 315]
 

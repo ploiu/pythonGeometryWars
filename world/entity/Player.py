@@ -8,6 +8,8 @@ class Player(Entity):
         super(Player, self).__init__(width=10, height=10, max_health=100, armor=0, speed=2.5, pos_x=250, pos_y=250)
         self.ammo_count = 0
         self.aim_direction_degrees = 0
+        self.score = 0
+        self.power_ups = []
 
     def update(self):
         super(Player, self).update()

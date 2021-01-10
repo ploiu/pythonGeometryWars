@@ -1,22 +1,21 @@
 from random import randint
 
+from pygame import event
+
 import Graphics
-from Graphics import RendererManager
 from core import desired_fps, difficulty_modifier, shoot_angles
 from event import SHOOT_EVENT
 from world.entity.bullet.EnemyBullet import EnemyBullet
 from world.entity.enemy.BaseEnemy import BaseEnemy
-from pygame import event
-from random import randint
 
 
 class Square(BaseEnemy):
     def __init__(self):
-        super(Square, self).__init__(width=10, height=10, max_health=5, armor=0, speed=1)
+        super(Square, self).__init__(width=10, height=10, max_health=5, armor=0, speed=1, score=100)
         # the amount of ticks since we last shot something
         self.ticks_since_last_shoot = randint(0, 5000)
-        self.shoot_interval = (5000 // desired_fps // difficulty_modifier)
-        self.change_direction_interval = 10_000 // desired_fps // difficulty_modifier
+        self.shoot_interval = (5_000 // desired_fps // difficulty_modifier // (10 if self.is_gold else 1))
+        self.change_direction_interval = 10_000 // desired_fps
         self.ticks_since_direction_changed = randint(0, 10_000)
 
     def ai(self):
@@ -49,7 +48,7 @@ class Square(BaseEnemy):
 
     def shoot(self, angle):
         event_info = {
-            'damage': 5,
+            'damage': self.strength,
             'angle': angle,
             'bullet_class': EnemyBullet,
             'owner': self

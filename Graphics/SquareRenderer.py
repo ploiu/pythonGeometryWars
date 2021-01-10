@@ -10,4 +10,5 @@ class SquareRenderer(Renderer):
     def render(self, square):
         super(SquareRenderer, self).render(square)
         if square.rect is not None:
-            draw.rect(RendererManager.screen, (0, 255, 0), square.rect)
+            color = (255, 215, 0) if square.is_gold else (0, 255, 0)
+            draw.rect(RendererManager.screen, color, square.rect)
