@@ -73,12 +73,6 @@ def main():
     print('init game')
     pygame.init()
     game_registry['renderer_manager'] = RendererManager()
-    # DEBUG
-    triangle = Triangle()
-    triangle.pos_x = 100
-    triangle.pos_y = 100
-    add_entity(triangle)
-    # END DEBUG
     setup_player()
     register_enemies()
     register_renderers()

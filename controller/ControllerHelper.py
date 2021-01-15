@@ -27,14 +27,14 @@ def bind_default_controls_for_player(controller, player):
                                      lambda: player.set_velocity_x(-player.speed),
                                      lambda: player.set_velocity_x(0)
                                      )
-    controller.map_button(SNESButtons.X, lambda: PlayerBullet(get_player()).shoot(90), None)
-    controller.map_button(SNESButtons.A, lambda: PlayerBullet(get_player()).shoot(0), None)
-    controller.map_button(SNESButtons.B, lambda: PlayerBullet(get_player()).shoot(270), None)
-    controller.map_button(SNESButtons.Y, lambda: PlayerBullet(get_player()).shoot(180), None)
-    controller.map_multi_button((SNESButtons.X, SNESButtons.A), lambda: PlayerBullet(get_player()).shoot(45), None)
-    controller.map_multi_button((SNESButtons.X, SNESButtons.Y), lambda: PlayerBullet(get_player()).shoot(135), None)
-    controller.map_multi_button((SNESButtons.Y, SNESButtons.B), lambda: PlayerBullet(get_player()).shoot(225), None)
-    controller.map_multi_button((SNESButtons.B, SNESButtons.A), lambda: PlayerBullet(get_player()).shoot(315), None)
+    controller.map_button(SNESButtons.X, lambda: get_player().update_shooting_angle(90),
+                          lambda: get_player().update_shooting_angle(-90))
+    controller.map_button(SNESButtons.A, lambda: get_player().update_shooting_angle(0),
+                          lambda: get_player().update_shooting_angle(-1))
+    controller.map_button(SNESButtons.B, lambda: get_player().update_shooting_angle(270),
+                          lambda: get_player().update_shooting_angle(-270))
+    controller.map_button(SNESButtons.Y, lambda: get_player().update_shooting_angle(180),
+                          lambda: get_player().update_shooting_angle(-180))
 
 
 def is_event_controller_input(event):
