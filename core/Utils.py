@@ -5,7 +5,8 @@ These functions cannot be imported into main, as they require use of the game re
 # used to reference core game objects (and keep them in memory to prevent them from being garbage collected)
 game_registry = {}
 
-def get_player():
+
+def get_player(index=0):
     return game_registry['player']
 
 

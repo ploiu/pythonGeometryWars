@@ -1,14 +1,23 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+
+import pygame
+from pygame import event
 
 from core import desired_fps, get_player
 from event import POWERUP_PICKUP_EVENT
 from world.entity.Entity import Entity
-import pygame
-from pygame import event
 
 
 class BasePowerupEntity(Entity, ABC):
     def __init__(self, life_in_seconds=10, pos_x=0, pos_y=0, powerup_type=None):
+        """
+        Initializes the powerup entity and sets its location in the world. This does not add it to the entity list
+        :param life_in_seconds: the amount of seconds this powerup entity can stay on the screen before it is removed
+        :param pos_x: the x position for this entity
+        :param pos_y: the y position for this entity
+        :param powerup_type: the associated Powerup class this entity is associated with. When obtained, this class is 
+            used in an event that gets processed by an event handler
+        """
         super(BasePowerupEntity, self).__init__(width=10, height=10, pos_x=pos_x, pos_y=pos_y)
         self.life_in_ticks = life_in_seconds * 1_000 * desired_fps
         self.current_age = 0

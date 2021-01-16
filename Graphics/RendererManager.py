@@ -15,6 +15,8 @@ class RendererManager:
 
     def __init__(self):
         global screen_size
+        from Graphics.PlayerInventoryRenderer import PlayerInventoryRenderer
+        self.player_inventory_renderers = [PlayerInventoryRenderer()]
         display_info = pygame.display.Info()
         if display_info.current_w < 1000 or display_info.current_h < 500:
             screen_size = display_info.current_w, display_info.current_h
@@ -47,6 +49,9 @@ class RendererManager:
         self.render_world_objects()
         self.render_entities()
         self.render_status_text()
+        # render player inventories
+        for renderer in self.player_inventory_renderers:
+            renderer.render()
         pygame.display.flip()
 
     def render_background(self):

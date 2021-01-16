@@ -11,13 +11,15 @@ class Player(Entity):
         self.ammo_count = 0
         self.aim_direction_degrees = 0
         self.score = 0
-        self.power_ups = []
+        self.powerups = []
         # if this is ever above 1, we shoot in the angle it is specified
         self.shooting_angle = -1
         # the number of cooldown frames in between times the player can shoot
         self.shoot_cooldown = 6
         # the number of frames since this player shot a bullet
         self.time_since_last_shoot = 6
+        # the list of powerups the player has, length must always be 2
+        self.powerups = [None, None]
 
     def update(self):
         super(Player, self).update()
@@ -84,3 +86,21 @@ class Player(Entity):
             # else if the amount is positive, we set our angle to -1
             else:
                 self.shooting_angle = -1
+
+    def consume_powerup(self, powerup=None, index=None):
+        """
+        consumes the passed powerup, applying its effect and removing it from the player's inventory
+        :param powerup: the specific powerup to use, must not be passed in if index is
+        :param index: the index in the list to consume the powerup, must not be passed in if powerup is
+        :return: None
+        """
+        if powerup is not None and index is not None:
+            raise ValueError("Either powerup or index must be none!")
+        elif index is not None:
+            powerup = self.powerups[index]
+        elif powerup is not None:
+            index = self.powerups.index(powerup)
+
+        if powerup is not None:
+            powerup.apply_effect()
+            self.powerups[index] = None

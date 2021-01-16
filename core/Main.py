@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from Graphics import RendererManager, register_renderers
+from Graphics import RendererManager, register_renderers, register_images
 from controller import Controller, bind_default_controls_for_player, is_event_controller_input, handle_controller_input
 from core import difficulty_modifier
 
@@ -47,12 +47,15 @@ def setup_controllers():
 
 
 def register_all_event_handlers():
-    from event.handlers import entity_handlers, level_handlers
+    from event.handlers import entity_handlers, level_handlers, player_handlers
     # entity handlers
     for event_id, handler_list in entity_handlers.items():
         register_event_handlers(event_id, handler_list)
     # level handlers
     for event_id, handler_list in level_handlers.items():
+        register_event_handlers(event_id, handler_list)
+    # player handlers
+    for event_id, handler_list in player_handlers.items():
         register_event_handlers(event_id, handler_list)
 
 
@@ -61,6 +64,11 @@ def register_enemies():
     register_enemy(Triangle, 2)
     register_enemy(Square, 2)
     register_enemy(Circle, 5)
+
+
+def register_powerups():
+    from world.entity.powerup import register_powerup, HealthPowerupEntity
+    register_powerup(HealthPowerupEntity)
 
 
 def setup_player():
@@ -75,7 +83,9 @@ def main():
     game_registry['renderer_manager'] = RendererManager()
     setup_player()
     register_enemies()
+    register_images()
     register_renderers()
+    register_powerups()
     setup_controllers()
     register_all_event_handlers()
     bind_default_controls_for_player(game_registry['controllers'][0], game_registry['player'])

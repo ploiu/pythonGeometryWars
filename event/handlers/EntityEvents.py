@@ -5,6 +5,7 @@ from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT
 from world import add_entity
 from world.entity.bullet import PlayerBullet
 from world.entity.enemy.BaseEnemy import BaseEnemy
+from random import randint
 
 
 def entity_hurt(hurt_event):
@@ -12,7 +13,7 @@ def entity_hurt(hurt_event):
     attacking_entity = hurt_event.__dict__['attacking_entity']
     hurt_entity.current_health -= int(hurt_event.__dict__['damage'])
     if hurt_entity.current_health <= 0 and isinstance(hurt_entity, BaseEnemy):
-        pygame.event.post(pygame.event.Event(ENEMY_DEATH_EVENT))
+        pygame.event.post(pygame.event.Event(ENEMY_DEATH_EVENT, {'entity': hurt_entity}))
         # if the attacking entity is a player, update that player's score
         if isinstance(attacking_entity, PlayerBullet):
             get_player().score += hurt_entity.score
@@ -22,6 +23,7 @@ def player_death(player_death_event):
     player = player_death_event.__dict__['player']
     player.is_dead = True
     set_running_game_loop(False)
+
 
 def enemy_spawn_event(spawn_event):
     enemy_class = spawn_event.__dict__['enemy_class']
@@ -46,9 +48,17 @@ def on_shoot(shoot_event):
 
 
 def on_entity_death(event):
+    from world.entity.powerup import get_random_powerup
     # update the difficulty and spawn in an enemy to replace it
     level = get_current_level()
     level.progress(True)
+    # get a random power up and spawn it at the entity's location
+    entity = event.__dict__['entity']
+    if isinstance(entity, BaseEnemy) and entity.is_gold or randint(0, 50) == 1:
+        powerup_class = get_random_powerup()
+        x, y = entity.pos_x, entity.pos_y
+        powerup_entity = powerup_class(pos_x=x, pos_y=y)
+        add_entity(powerup_entity)
 
 
 # export this list to register them all
