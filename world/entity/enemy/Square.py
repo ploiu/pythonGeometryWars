@@ -42,6 +42,8 @@ class Square(BaseEnemy):
             self.speed_y = self.speed
         elif self.pos_y >= Graphics.RendererManager.get_screen_size()[1]:
             self.speed_y = -self.speed
+            
+        self.is_dirty = True
 
     def update(self):
         super(Square, self).update()

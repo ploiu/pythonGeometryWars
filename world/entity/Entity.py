@@ -17,8 +17,14 @@ class Entity(WorldObject):
         self.speed = speed
         self.speed_x = 0
         self.speed_y = 0
+        # used to determine if we should render
+        self.is_dirty = False
+        # used to help determine if we are dirty
+        self.last_x, self.last_y = self.pos_x, self.pos_y
 
     def update(self):
+        self.last_x, self.last_y = self.pos_x, self.pos_y
+        self.is_dirty = False
         if self.current_health <= 0:
             self.is_dead = True
         else:

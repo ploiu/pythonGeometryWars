@@ -38,6 +38,7 @@ class Triangle(BaseEnemy):
         velocities = super(Triangle, self).get_velocity_to_target(self.target.rect)
         self.speed_x = velocities[0] * self.speed
         self.speed_y = velocities[1] * self.speed
+        self.is_dirty = True
 
     def shoot(self, angle):
         # triangles don't shoot, they act like suicide bombers

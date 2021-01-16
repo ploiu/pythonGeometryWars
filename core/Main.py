@@ -14,16 +14,20 @@ from world.entity.enemy import Triangle, Square, Circle
 
 def start_event_loop():
     from core.GlobalValues import is_running_game_loop, set_running_game_loop, desired_fps
+    from world.entity import remove_dead_entities
+
     global desired_fps
     clock = pygame.time.Clock()
     # TODO a lot of this should be moved out, but to where?
-    pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(10_000 // difficulty_modifier))
+    # pygame.time.set_timer(LEVEL_PROGRESS_EVENT, int(10_000 // difficulty_modifier))
     set_running_game_loop(True)
     # set up an initial level
     pygame.event.post(pygame.event.Event(LEVEL_START_EVENT))
     while True:
         if is_running_game_loop():
             update_entities()
+            game_registry['renderer_manager'].render_game()
+            remove_dead_entities()
         else:
             # stop the timer for level progress
             pygame.time.set_timer(LEVEL_PROGRESS_EVENT, 0)
@@ -35,7 +39,6 @@ def start_event_loop():
                 handle_controller_input(event, game_registry['controllers'][event.joy])
             else:
                 process_event(event)
-            game_registry['renderer_manager'].render_game()
         # wait to update the next loop
         clock.tick(desired_fps)
 
@@ -61,9 +64,9 @@ def register_all_event_handlers():
 
 def register_enemies():
     from world.entity.enemy import register_enemy
-    register_enemy(Triangle, 2)
+    # register_enemy(Triangle, 2)
     register_enemy(Square, 2)
-    register_enemy(Circle, 5)
+    # register_enemy(Circle, 5)
 
 
 def register_powerups():

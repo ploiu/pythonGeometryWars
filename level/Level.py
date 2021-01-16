@@ -33,7 +33,7 @@ class Level:
     def start(self):
         # pick a random number of enemies to spawn initially
         game_registry['current_level'] = self
-        max_enemies_to_spawn = 10
+        max_enemies_to_spawn = 1
         for index in range(0, max_enemies_to_spawn):
             self.spawn_enemy()
 

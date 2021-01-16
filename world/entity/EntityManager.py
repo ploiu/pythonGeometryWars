@@ -9,10 +9,13 @@ from world.entity.enemy.BaseEnemy import BaseEnemy
 def update_entities():
     for entity in EntityManager.entities:
         entity.update()
-    # now remove all dead entities
-    EntityManager.entities = list(filter(lambda it: not it.is_dead, EntityManager.entities))
     # post an event to pygame saying that all entities were updated
     pygame.event.post(Event(ENTITY_UPDATE_EVENT))
+
+
+def remove_dead_entities():
+    # now remove all dead entities
+    EntityManager.entities = list(filter(lambda it: not it.is_dead, EntityManager.entities))
 
 
 def add_entity(entity):

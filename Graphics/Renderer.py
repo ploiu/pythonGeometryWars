@@ -15,7 +15,4 @@ class Renderer(ABC):
         self.type = _type
 
     def render(self, obj_to_render):
-        if type(obj_to_render) != self.type:
-            raise ValueError(
-                "This renderer [{0}] does not support rendering [{1}]".format(self.type, type(obj_to_render)))
-        # the rest must be handled in the child class
+        pass
