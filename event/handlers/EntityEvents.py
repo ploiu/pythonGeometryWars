@@ -1,6 +1,6 @@
 import pygame
 
-from core import get_current_level, set_running_game_loop, get_player
+from core import get_current_level, set_running_game_loop, get_player, get_player_count
 from event.Event import ENTITY_HURT_EVENT, PLAYER_DEATH_EVENT, ENEMY_SPAWN_EVENT, SHOOT_EVENT, ENEMY_DEATH_EVENT
 from world import add_entity
 from world.entity.bullet import PlayerBullet
@@ -16,13 +16,19 @@ def entity_hurt(hurt_event):
         pygame.event.post(pygame.event.Event(ENEMY_DEATH_EVENT, {'entity': hurt_entity}))
         # if the attacking entity is a player, update that player's score
         if isinstance(attacking_entity, PlayerBullet):
-            get_player().score += hurt_entity.score
+            attacking_entity.owner.score += hurt_entity.score
 
 
 def player_death(player_death_event):
     player = player_death_event.__dict__['player']
     player.is_dead = True
-    set_running_game_loop(False)
+    # if all players are dead, kill the game loop
+    all_players_dead = True
+    for player_index in range(get_player_count()):
+        all_players_dead = all_players_dead and get_player(player_index).is_dead
+
+    if all_players_dead:
+        set_running_game_loop(False)
 
 
 def enemy_spawn_event(spawn_event):

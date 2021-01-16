@@ -1,4 +1,4 @@
-from core import get_player
+from core import get_player, get_player_count
 from world.entity.bullet.BaseBullet import BaseBullet
 
 
@@ -7,4 +7,11 @@ class EnemyBullet(BaseBullet):
         super(EnemyBullet, self).__init__(damage=damage)
 
     def check_hit(self):
-        return get_player() if get_player().rect.colliderect(self.rect) else None
+        first_player = get_player(0)
+        second_player = get_player(1) if get_player_count() == 2 else None
+        if first_player.rect.colliderect(self.rect):
+            return first_player
+        elif second_player is not None and second_player.rect.colliderect(self.rect):
+            return second_player
+        else:
+            return None

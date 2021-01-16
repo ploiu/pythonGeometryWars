@@ -12,7 +12,7 @@ class PlayerInventoryRenderer:
         screen = RendererManager.screen
         screen_size = RendererManager.get_screen_size()
         # get the top section of the screen to render the player's inventory stuff
-        starting_x = screen_size[0] // 2 * self.player_index + 50
+        starting_x = screen_size[0] // 2 * 1.5 * self.player_index + 50
         starting_y = 50
         width = screen_size[0] // 2 - 100
         player = get_player(self.player_index)

@@ -72,21 +72,24 @@ def register_powerups():
 
 
 def setup_player():
-    player = Player()
-    add_entity(player)
-    game_registry['player'] = player
+    game_registry['players'] = []
+    for joystickNumber in range(pygame.joystick.get_count()):
+        player = Player(joystickNumber)
+        add_entity(player)
+        game_registry['players'].append(player)
 
 
 def main():
     print('init game')
     pygame.init()
-    game_registry['renderer_manager'] = RendererManager()
     setup_player()
+    game_registry['renderer_manager'] = RendererManager()
     register_enemies()
     register_images()
     register_renderers()
     register_powerups()
     setup_controllers()
     register_all_event_handlers()
-    bind_default_controls_for_player(game_registry['controllers'][0], game_registry['player'])
+    for index in range(pygame.joystick.get_count()):
+        bind_default_controls_for_player(game_registry['controllers'][index], game_registry['players'][index])
     start_event_loop()

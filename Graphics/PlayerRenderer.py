@@ -11,5 +11,5 @@ class PlayerRenderer(Renderer):
 
     def render(self, player):
         super(PlayerRenderer, self).render(player)
-        color = 255, 0, 0
+        color = (255, 0, 0) if player.player_number == 0 else (0, 0, 255)
         pygame.draw.rect(RendererManager.screen, color, player.rect)

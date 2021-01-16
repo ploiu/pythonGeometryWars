@@ -1,7 +1,7 @@
 import pygame
 
 # the screen background color
-from core import get_player
+from core import get_player, get_player_count
 from world import EntityManager
 
 screen_background = 0, 0, 0
@@ -16,7 +16,7 @@ class RendererManager:
     def __init__(self):
         global screen_size
         from Graphics.PlayerInventoryRenderer import PlayerInventoryRenderer
-        self.player_inventory_renderers = [PlayerInventoryRenderer()]
+        self.player_inventory_renderers = [PlayerInventoryRenderer(player_index) for player_index in range(get_player_count())]
         display_info = pygame.display.Info()
         if display_info.current_w < 1000 or display_info.current_h < 500:
             screen_size = display_info.current_w, display_info.current_h
@@ -70,11 +70,16 @@ class RendererManager:
     def render_status_text():
         global screen_size
         from level import Level
-        player = get_player()
         font = pygame.font.SysFont(None, 20)
-        health = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
-        level = font.render("Difficulty: {0}".format(Level.current_level), True, (0, 125, 245))
-        score = font.render("Score: {0}".format(player.score), True, (0, 255, 0))
-        RendererManager.screen.blit(health, (20, screen_size[1] - 20))
-        RendererManager.screen.blit(level, (health.get_width() + 40, screen_size[1] - 20))
-        RendererManager.screen.blit(score, (level.get_width() + health.get_width() + 60, screen_size[1] - 20))
+        for player_number in range(get_player_count()):
+            # get the top section of the screen to render the player's inventory stuff
+            starting_x = screen_size[0] // 2 * player_number + 50
+            starting_y = screen_size[1] - 20
+            player = get_player(player_number)
+            health = font.render("Health: {0}".format(player.current_health), True, (255, 0, 0))
+            level = font.render("Difficulty: {0}".format(Level.current_level), True, (0, 125, 245))
+            score = font.render("Score: {0}".format(player.score), True, (0, 255, 0))
+            RendererManager.screen.blit(health, (starting_x + 20, starting_y))
+            RendererManager.screen.blit(level, (starting_x + 20 + health.get_width() + 40, starting_y))
+            RendererManager.screen.blit(score,
+                                        (starting_x + 20 + level.get_width() + health.get_width() + 60, starting_y))

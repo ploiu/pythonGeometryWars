@@ -4,7 +4,7 @@ from pygame import event
 
 from Graphics import RendererManager
 from core.GlobalValues import difficulty_modifier
-from core.Utils import get_player, game_registry
+from core.Utils import get_player, game_registry, get_player_count
 from event import ENEMY_SPAWN_EVENT
 from world import EntityManager
 from world.entity import get_enemy_count
@@ -41,7 +41,11 @@ class Level:
         if not from_dead_entity:
             self.update_difficulty(1)
         # decide if we should spawn a new entity
-        if not get_player().is_dead and get_enemy_count() <= 40:
+        all_players_dead = True
+        for player_number in range(get_player_count()):
+            all_players_dead = all_players_dead and get_player(player_number).is_dead
+
+        if not all_players_dead and get_enemy_count() <= 40:
             if from_dead_entity:
                 self.spawn_enemy()
             else:

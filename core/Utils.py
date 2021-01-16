@@ -7,7 +7,11 @@ game_registry = {}
 
 
 def get_player(index=0):
-    return game_registry['player']
+    return game_registry['players'][index]
+
+
+def get_player_count():
+    return len(game_registry['players'])
 
 
 def get_current_level():

@@ -1,6 +1,8 @@
+from random import randint
+
 import pygame
 
-from core import get_player
+from core import get_player, get_player_count
 from event import ENTITY_HURT_EVENT
 from world.entity.enemy.BaseEnemy import BaseEnemy
 
@@ -9,10 +11,11 @@ class Triangle(BaseEnemy):
     def __init__(self):
         super(Triangle, self).__init__(width=10, height=10, max_health=3, armor=0, speed=2.2, score=25)
         self.target = None
+        self.target_player_index = randint(0, get_player_count() - 1)
 
     def ai(self):
         # attempt to move towards the player
-        self.target = get_player()
+        self.target = get_player(self.target_player_index)
         target_location = self.target.rect
         if target_location is not None:
             # create the search radius as a rectangle around our hitbox

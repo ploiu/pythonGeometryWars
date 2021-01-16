@@ -6,7 +6,7 @@ from world.entity.bullet import PlayerBullet
 
 
 class Player(Entity):
-    def __init__(self):
+    def __init__(self, player_number=0):
         super(Player, self).__init__(width=10, height=10, max_health=100, armor=0, speed=2.5, pos_x=250, pos_y=250)
         self.ammo_count = 0
         self.aim_direction_degrees = 0
@@ -20,6 +20,8 @@ class Player(Entity):
         self.time_since_last_shoot = 6
         # the list of powerups the player has, length must always be 2
         self.powerups = [None, None]
+        # if we are player 1 or 2
+        self.player_number = player_number
 
     def update(self):
         super(Player, self).update()

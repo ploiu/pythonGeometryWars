@@ -3,7 +3,7 @@ from abc import ABC
 import pygame
 from pygame import event
 
-from core import desired_fps, get_player
+from core import desired_fps, get_player, get_player_count
 from event import POWERUP_PICKUP_EVENT
 from world.entity.Entity import Entity
 
@@ -30,8 +30,20 @@ class BasePowerupEntity(Entity, ABC):
         if self.current_age >= self.life_in_ticks:
             self.is_dead = True
         elif self.check_collide():
-            event.post(event.Event(POWERUP_PICKUP_EVENT, {'powerup': self.powerup_type}))
+            event.post(
+                event.Event(POWERUP_PICKUP_EVENT, {'powerup': self.powerup_type, 'player': self.get_collided_player()}))
             self.is_dead = True
 
     def check_collide(self):
-        return get_player().rect.colliderect(self.rect)
+        for player_index in range(get_player_count()):
+            if get_player(player_index).rect.colliderect(self.rect):
+                return True
+
+        return False
+
+    def get_collided_player(self):
+        if get_player_count() == 1:
+            return get_player(0)
+        else:
+            first_player, second_player = get_player(0), get_player(1)
+            return first_player if first_player.rect.colliderect(self.rect) else second_player
