@@ -45,13 +45,16 @@ class BaseBullet(Entity):
 
         # get any entities this bullet has hit
         hit_entity = self.check_hit()
-        if hit_entity is not None:
+        if hit_entity is not None and not hit_entity.is_dead:
             self.on_hit(hit_entity)
 
     def on_hit(self, other):
         # hurt the entity we hit
         event.post(
             event.Event(ENTITY_HURT_EVENT, {'hurt_entity': other, 'attacking_entity': self, 'damage': self.damage}))
+        # kill the enemy in case the event isn't processed in time
+        if other.current_health <= self.damage:
+            other.is_dead = True
         self.is_dead = True
 
     def check_hit(self):
