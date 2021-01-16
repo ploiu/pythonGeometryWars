@@ -67,8 +67,9 @@ def register_enemies():
 
 
 def register_powerups():
-    from world.entity.powerup import register_powerup, HealthPowerupEntity
+    from world.entity.powerup import register_powerup, HealthPowerupEntity, BigPlayerBulletPowerupEntity
     register_powerup(HealthPowerupEntity)
+    register_powerup(BigPlayerBulletPowerupEntity)
 
 
 def setup_player():

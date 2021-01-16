@@ -8,10 +8,8 @@ from world.entity.bullet import PlayerBullet
 class Player(Entity):
     def __init__(self, player_number=0):
         super(Player, self).__init__(width=10, height=10, max_health=100, armor=0, speed=2.5, pos_x=250, pos_y=250)
-        self.ammo_count = 0
         self.aim_direction_degrees = 0
         self.score = 0
-        self.powerups = []
         # if this is ever above 1, we shoot in the angle it is specified
         self.shooting_angle = -1
         # the number of cooldown frames in between times the player can shoot
@@ -20,8 +18,12 @@ class Player(Entity):
         self.time_since_last_shoot = 6
         # the list of powerups the player has, length must always be 2
         self.powerups = [None, None]
+        # the list of active powerups the player has, length must always be 2
+        self.active_powerups = [None, None]
         # if we are player 1 or 2
         self.player_number = player_number
+        # the type of bullet the player has
+        self.bullet_class = PlayerBullet
 
     def update(self):
         super(Player, self).update()
@@ -34,8 +36,17 @@ class Player(Entity):
                 self.time_since_last_shoot = 0
                 self.shoot(self.shooting_angle)
 
+        if not self.is_dead:
+            # for each active powerup, tick it
+            for (index, powerup) in enumerate(self.active_powerups):
+                if powerup is not None:
+                    powerup.tick()
+                    if powerup.life_in_ticks <= 0:
+                        # remove the powerup from the active powerup list
+                        self.active_powerups[index] = None
+
     def shoot(self, angle):
-        PlayerBullet(self).shoot(angle)
+        self.bullet_class(self).shoot(angle)
 
     def update_shooting_angle(self, new_angle_amount):
         """
@@ -104,5 +115,9 @@ class Player(Entity):
             index = self.powerups.index(powerup)
 
         if powerup is not None:
-            powerup.apply_effect()
-            self.powerups[index] = None
+            # get the next index for an empty active powerup slot
+            active_index = 0 if self.active_powerups[0] is None else 1 if self.active_powerups[1] is None else -1
+            if index > -1:
+                powerup.apply_effect()
+                self.powerups[index] = None
+                self.active_powerups[active_index] = powerup

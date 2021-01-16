@@ -1,5 +1,3 @@
-import pygame
-
 from Graphics import Renderer, RendererManager
 from world.entity.powerup import HealthPowerupEntity
 

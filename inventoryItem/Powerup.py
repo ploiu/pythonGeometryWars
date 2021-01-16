@@ -10,7 +10,7 @@ class Powerup(ABC):
 
     def __init__(self, player, life_in_seconds=60):
         self.player = player
-        self.life_in_ticks = life_in_seconds * 1_000 * desired_fps
+        self.life_in_ticks = life_in_seconds * desired_fps
 
     @abstractmethod
     def apply_effect(self):

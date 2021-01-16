@@ -7,6 +7,7 @@ from .SquareRenderer import SquareRenderer
 from .EnemyBulletRenderer import EnemyBulletRenderer
 from .CircleRenderer import CircleRenderer
 from .HealthPowerupEntityRenderer import HealthPowerupEntityRenderer
+from .BigPlayerBulletRenderer import BigPlayerBulletRenderer
 
 from .ImageRegistry import register_images, get_image
 

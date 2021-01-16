@@ -19,7 +19,7 @@ class BasePowerupEntity(Entity, ABC):
             used in an event that gets processed by an event handler
         """
         super(BasePowerupEntity, self).__init__(width=10, height=10, pos_x=pos_x, pos_y=pos_y)
-        self.life_in_ticks = life_in_seconds * 1_000 * desired_fps
+        self.life_in_ticks = life_in_seconds * desired_fps
         self.current_age = 0
         # the associated powerup class that this powerup is tied to
         self.powerup_type = powerup_type
